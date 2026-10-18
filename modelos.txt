@@ -1,0 +1,36 @@
+# Modelos del network volume. Formato: <carpeta bajo models/> <URL>
+# Rutas comprobadas contra la API de Hugging Face el 18-oct-2026. Total ≈ 91 GB sin Chatterbox:
+# el volumen tiene que ser de 120 GB o más.
+#
+# OJO: InfiniteTalk está construido sobre Wan 2.1 I2V 14B, NO sobre Wan 2.2.
+# Por eso hay dos bases de video: Wan 2.1 (personajes hablando) y Wan 2.2
+# (close-ups de comida y tomas sin diálogo).
+
+# --- InfiniteTalk (sobre Wan 2.1 I2V 480p) ---
+diffusion_models https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/I2V/Wan2_1-I2V-14B-480p_fp8_e4m3fn_scaled_KJ.safetensors
+diffusion_models https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/InfiniteTalk/Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors
+wav2vec2         https://huggingface.co/Kijai/wav2vec2_safetensors/resolve/main/wav2vec2-chinese-base_fp16.safetensors
+diffusion_models https://huggingface.co/Kijai/MelBandRoFormer_comfy/resolve/main/MelBandRoformer_fp16.safetensors
+loras            https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Lightx2v/lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
+clip_vision      https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
+
+# --- Wan 2.2 I2V 14B (alto y bajo ruido) + LoRA de 4 pasos ---
+diffusion_models https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors
+diffusion_models https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors
+loras            https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors
+loras            https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors
+
+# --- Compartidos por Wan 2.1 y 2.2 ---
+text_encoders    https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
+vae              https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
+
+# --- Qwen-Image-Edit-2511 (hojas de personaje y fondos consistentes) ---
+diffusion_models https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_2511_fp8mixed.safetensors
+text_encoders    https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors
+vae              https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors
+loras            https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning/resolve/main/Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors
+
+# --- Chatterbox ---
+# El nodo descarga sus pesos de Hugging Face al primer uso (multilingüe, con
+# paquete es-mx). En serverless eso es en cada arranque en frío: hay que
+# comprobar a qué carpeta los baja y precargarlos en el volumen.
