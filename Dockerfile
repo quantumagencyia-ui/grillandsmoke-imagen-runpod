@@ -25,7 +25,11 @@ ARG CHATTERBOX_SHA=f7d7a16187430abcaf91a3039b9c83aa9960816a
 RUN uv pip freeze | grep -iE '^(torch|torchvision|torchaudio|transformers|huggingface-hub)==' \
       > /opt/candado-base.txt \
     && cat /opt/candado-base.txt \
-    && test "$(wc -l < /opt/candado-base.txt)" -eq 5
+    && test "$(wc -l < /opt/candado-base.txt)" -eq 5 \
+    && sed 's/+[^[:space:]]*$//' /opt/candado-base.txt > /opt/candado-uv.txt
+# uv busca en PyPI, donde no existe `torch==2.11.0+cu128`: el candado que se le
+# pasa va sin la etiqueta local (`==2.11.0` la acepta y deja la que ya está).
+# El completo, con `+cu128`, es el que compara verificar-imagen.sh.
 
 WORKDIR /comfyui/custom_nodes
 RUN set -e; \
@@ -37,7 +41,7 @@ RUN set -e; \
     for d in */; do \
       if [ -f "$d/requirements.txt" ]; then \
         echo "== requirements de $d"; \
-        uv pip install -c /opt/candado-base.txt -r "$d/requirements.txt"; \
+        uv pip install -c /opt/candado-uv.txt -r "$d/requirements.txt"; \
       fi; \
     done; \
     rm -rf */.git
