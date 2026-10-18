@@ -8,6 +8,7 @@ on:
     paths:
       - Dockerfile
       - verificar-imagen.sh
+      - parchear_handler.py
       - .github/workflows/imagen.yml
   workflow_dispatch:
 

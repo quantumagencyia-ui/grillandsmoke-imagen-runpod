@@ -9,9 +9,9 @@ uv pip freeze | grep -iE '^(torch|torchvision|torchaudio|transformers|huggingfac
   | diff /opt/candado-base.txt - \
   || { echo "FALLO: un requirements cambió versiones congeladas"; exit 1; }
 
-echo "== 2. el ComfyUI de la base sabe hacer Qwen-Image-Edit 2511"
-grep -q 'TextEncodeQwenImageEditPlus' /comfyui/comfy_extras/nodes_qwen.py \
-  || { echo "FALLO: este ComfyUI no trae TextEncodeQwenImageEditPlus"; exit 1; }
+echo "== 2. el handler tiene el parche de audio y video"
+grep -q 'for _clave in \[c for c in ("images", "audio", "gifs", "videos")' /handler.py \
+  || { echo "FALLO: el handler no devuelve audio ni video"; exit 1; }
 
 echo "== 3. ComfyUI arranca (CPU) y carga los cuatro nodos"
 cd /comfyui
@@ -23,7 +23,7 @@ if grep -q 'IMPORT FAILED): /comfyui/custom_nodes/' /tmp/arranque.log; then
   echo "FALLO: hay nodos propios que no importaron"
   grep -B30 'IMPORT FAILED): /comfyui/custom_nodes/' /tmp/arranque.log; exit 1
 fi
-for n in ComfyUI-WanVideoWrapper ComfyUI-KJNodes ComfyUI-VideoHelperSuite ComfyUI-Chatterbox; do
+for n in ComfyUI-WanVideoWrapper ComfyUI-KJNodes ComfyUI-VideoHelperSuite ComfyUI_Fill-ChatterBox; do
   grep -qE "seconds: /comfyui/custom_nodes/$n\$" /tmp/arranque.log \
     || { echo "FALLO: $n no aparece como cargado"; tail -60 /tmp/arranque.log; exit 1; }
 done
