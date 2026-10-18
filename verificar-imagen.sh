@@ -4,6 +4,10 @@
 # qué nodos cargó de verdad.
 set -euo pipefail
 
+echo "== 0. uv y ComfyUI usan el mismo python"
+test "$(python -c 'import sys; print(sys.prefix)')" = /opt/venv \
+  || { echo "FALLO: el python del PATH no es /opt/venv"; exit 1; }
+
 echo "== 1. torch y compañía siguen siendo los de la base"
 uv pip freeze | grep -iE '^(torch|torchvision|torchaudio|transformers|huggingface-hub)==' \
   | diff /opt/candado-base.txt - \

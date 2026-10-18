@@ -13,6 +13,11 @@
 ARG BASE=runpod/worker-comfyui:5.10.0-base-cuda12.8.1
 FROM ${BASE}
 
+# ComfyUI corre con el python del PATH (/opt/venv). La base trae además un
+# /comfyui/.venv que no se usa; sin esto, uv lo descubre desde
+# /comfyui/custom_nodes e instala ahí los requirements, lejos del runtime.
+ENV VIRTUAL_ENV=/opt/venv
+
 # Nodos fijados por commit: reconstruir tiene que dar la misma imagen.
 ARG WANVIDEO_SHA=088128b224242e110d3906c6750e9a3a348a659b
 ARG KJNODES_SHA=17195fcfa8a05f601b766a0f09c9733284f47416
