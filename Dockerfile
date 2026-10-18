@@ -25,11 +25,12 @@ ARG CHATTERBOX_SHA=f7d7a16187430abcaf91a3039b9c83aa9960816a
 RUN uv pip freeze | grep -iE '^(torch|torchvision|torchaudio|transformers|huggingface-hub)==' \
       > /opt/candado-base.txt \
     && cat /opt/candado-base.txt \
-    && test "$(wc -l < /opt/candado-base.txt)" -eq 5 \
-    && sed 's/+[^[:space:]]*$//' /opt/candado-base.txt > /opt/candado-uv.txt
-# uv busca en PyPI, donde no existe `torch==2.11.0+cu128`: el candado que se le
-# pasa va sin la etiqueta local (`==2.11.0` la acepta y deja la que ya está).
-# El completo, con `+cu128`, es el que compara verificar-imagen.sh.
+    && test "$(wc -l < /opt/candado-base.txt)" -eq 5
+# `torch==2.11.0+cu128` no existe en PyPI (el 2.11.0 de PyPI es la build cu13),
+# así que uv también mira el índice cu128 de PyTorch: ahí el candado se cumple
+# con lo que ya está instalado y no baja nada.
+ENV UV_EXTRA_INDEX_URL=https://download.pytorch.org/whl/cu128 \
+    UV_INDEX_STRATEGY=unsafe-best-match
 
 WORKDIR /comfyui/custom_nodes
 RUN set -e; \
@@ -41,7 +42,7 @@ RUN set -e; \
     for d in */; do \
       if [ -f "$d/requirements.txt" ]; then \
         echo "== requirements de $d"; \
-        uv pip install -c /opt/candado-uv.txt -r "$d/requirements.txt"; \
+        uv pip install -c /opt/candado-base.txt -r "$d/requirements.txt"; \
       fi; \
     done; \
     rm -rf */.git
