@@ -17,8 +17,10 @@ while read -r carpeta url; do
   destino="$RAIZ/models/$carpeta/$(basename "$url")"
   mkdir -p "$(dirname "$destino")"
   echo "== $carpeta/$(basename "$url")"
-  wget -q --show-progress -c -O "$destino" "$url"
-  esperado=$(curl -sIL "$url" | grep -i '^x-linked-size:' | tail -1 | tr -dc '0-9')
+  wget -nv -c -O "$destino" "$url"
+  # Los ficheros chicos (no LFS) no traen x-linked-size: con pipefail el grep
+  # vacío tumbaba el script entero, así que aquí no cuenta como fallo.
+  esperado=$(curl -sIL "$url" | grep -i '^x-linked-size:' | tail -1 | tr -dc '0-9' || true)
   real=$(stat -c %s "$destino")
   if [[ -n "$esperado" && "$esperado" != "$real" ]]; then
     echo "   TAMAÑO DISTINTO: esperado $esperado, en disco $real"; fallos=$((fallos+1))
