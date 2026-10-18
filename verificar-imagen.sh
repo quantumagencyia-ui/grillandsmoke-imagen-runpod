@@ -8,6 +8,12 @@ echo "== 0. uv y ComfyUI usan el mismo python"
 test "$(python -c 'import sys; print(sys.prefix)')" = /opt/venv \
   || { echo "FALLO: el python del PATH no es /opt/venv"; exit 1; }
 
+echo "== 0b. el volumen aporta las carpetas de modelos que usan los workflows"
+for c in diffusion_models text_encoders wav2vec2 clip_vision loras vae; do
+  grep -qE "^  $c: models/$c/" /comfyui/extra_model_paths.yaml \
+    || { echo "FALLO: $c no está en extra_model_paths.yaml"; exit 1; }
+done
+
 echo "== 1. torch y compañía siguen siendo los de la base"
 uv pip freeze | grep -iE '^(torch|torchvision|torchaudio|transformers|huggingface-hub)==' \
   | diff /opt/candado-base.txt - \

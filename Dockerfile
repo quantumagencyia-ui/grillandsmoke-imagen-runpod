@@ -52,6 +52,13 @@ RUN set -e; \
     done; \
     rm -rf */.git
 
+# El extra_model_paths.yaml de worker-comfyui 5.10.0 solo mapea checkpoints, clip,
+# clip_vision, loras, vae, unet… del volumen: sin esto ComfyUI no ve
+# diffusion_models/, text_encoders/ ni wav2vec2/ (prueba del 18-oct: «not in []»).
+RUN printf '  diffusion_models: models/diffusion_models/\n  text_encoders: models/text_encoders/\n  wav2vec2: models/wav2vec2/\n' \
+      >> /comfyui/extra_model_paths.yaml \
+    && cat /comfyui/extra_model_paths.yaml
+
 # Pesos de Chatterbox en el volumen (models/chatterbox/chatterbox_multilingual).
 RUN rm -rf /comfyui/models/chatterbox \
     && ln -s /runpod-volume/models/chatterbox /comfyui/models/chatterbox
