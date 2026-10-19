@@ -6,3 +6,7 @@ diffusion_models MelBandRoformer_fp16.safetensors
 loras lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
 clip_vision clip_vision_h.safetensors
 text_encoders umt5_xxl_fp8_e4m3fn_scaled.safetensors
+# 19-oct-2026: LTX-2.3 ganó (piloto 3). Fuera InfiniteTalk y lo que solo usaba él (condición del dueño, msg 48).
+diffusion_models Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors
+wav2vec2 wav2vec2-chinese-base_fp16.safetensors
+vae wan_2.1_vae.safetensors
