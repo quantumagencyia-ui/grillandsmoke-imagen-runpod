@@ -9,7 +9,7 @@ test "$(python -c 'import sys; print(sys.prefix)')" = /opt/venv \
   || { echo "FALLO: el python del PATH no es /opt/venv"; exit 1; }
 
 echo "== 0b. el volumen aporta las carpetas de modelos que usan los workflows"
-for c in diffusion_models text_encoders wav2vec2 clip_vision loras vae; do
+for c in diffusion_models text_encoders wav2vec2 clip_vision loras vae latent_upscale_models qwen-tts; do
   grep -qE "^  $c: models/$c/" /comfyui/extra_model_paths.yaml \
     || { echo "FALLO: $c no está en extra_model_paths.yaml"; exit 1; }
 done
@@ -22,8 +22,12 @@ uv pip freeze | grep -iE '^(torch|torchvision|torchaudio|transformers|huggingfac
 echo "== 2. el handler tiene el parche de audio y video"
 grep -q 'for _clave in \[c for c in ("images", "audio", "gifs", "videos")' /handler.py \
   || { echo "FALLO: el handler no devuelve audio ni video"; exit 1; }
+grep -q 'GS_LIBERAR_ENTRE_JOBS' /handler.py \
+  || { echo "FALLO: el handler no libera la RAM entre jobs"; exit 1; }
+python -c "import ast; ast.parse(open('/handler.py').read())" \
+  || { echo "FALLO: el handler parchado no es python válido"; exit 1; }
 
-echo "== 3. ComfyUI arranca (CPU) y carga los cuatro nodos"
+echo "== 3. ComfyUI arranca (CPU) y carga los cinco nodos y los de LTX-2.3"
 cd /comfyui
 python main.py --cpu --quick-test-for-ci > /tmp/arranque.log 2>&1 || true
 grep -A40 'Import times for custom nodes' /tmp/arranque.log || true
@@ -33,8 +37,12 @@ if grep -q 'IMPORT FAILED): /comfyui/custom_nodes/' /tmp/arranque.log; then
   echo "FALLO: hay nodos propios que no importaron"
   grep -B30 'IMPORT FAILED): /comfyui/custom_nodes/' /tmp/arranque.log; exit 1
 fi
-for n in ComfyUI-WanVideoWrapper ComfyUI-KJNodes ComfyUI-VideoHelperSuite ComfyUI_Fill-ChatterBox; do
+for n in ComfyUI-WanVideoWrapper ComfyUI-KJNodes ComfyUI-VideoHelperSuite ComfyUI_Fill-ChatterBox ComfyUI-Qwen-TTS; do
   grep -qE "seconds: /comfyui/custom_nodes/$n\$" /tmp/arranque.log \
     || { echo "FALLO: $n no aparece como cargado"; tail -60 /tmp/arranque.log; exit 1; }
 done
+# Los nodos del núcleo que usa flujos._ltx (no basta con que ComfyUI arranque).
+grep -q 'LTXAVTextEncoderLoader' /comfyui/comfy_extras/nodes_lt_audio.py \
+  && grep -q 'LTXVLatentUpsampler' /comfyui/comfy_extras/nodes_lt_upsampler.py \
+  || { echo "FALLO: este ComfyUI no trae los nodos de LTX-2.3"; exit 1; }
 echo "OK: imagen verificada"

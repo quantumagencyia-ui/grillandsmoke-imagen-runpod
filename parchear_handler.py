@@ -1,4 +1,5 @@
-"""Hace que worker-comfyui 5.11 devuelva audio y video además de imágenes.
+"""Hace que worker-comfyui 5.10 devuelva audio y video además de imágenes, y
+que libere la RAM del job anterior antes de cada job (`/free` de ComfyUI).
 
 El handler solo recoge `node_output["images"]`; SaveAudio deja su archivo en
 `audio` y VHS_VideoCombine en `gifs`, y el handler los tira con un aviso.
@@ -11,6 +12,18 @@ import sys
 from pathlib import Path
 
 CAMBIOS = [
+    ('    # Upload input images if they exist\n',
+     '    # Grill & Smoke: soltar los modelos y la caché del job anterior (OOM de RAM, 19-oct).\n'
+     '    if os.environ.get("GS_LIBERAR_ENTRE_JOBS", "true").lower() == "true":\n'
+     '        try:\n'
+     '            requests.post(f"http://{COMFY_HOST}/free",\n'
+     '                          json={"unload_models": True, "free_memory": True}, timeout=10)\n'
+     '            time.sleep(3)\n'
+     '            print("worker-comfyui - memoria del job anterior liberada (/free)")\n'
+     '        except Exception as e:\n'
+     '            print(f"worker-comfyui - /free falló: {e}")\n'
+     '\n'
+     '    # Upload input images if they exist\n'),
     ('            if "images" in node_output:\n',
      '            for _clave in [c for c in ("images", "audio", "gifs", "videos") if c in node_output]:\n'),
     ("""{len(node_output['images'])} image(s)""",
