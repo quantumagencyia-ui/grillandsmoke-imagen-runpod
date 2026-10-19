@@ -8,15 +8,10 @@
 # Qwen-Image-Edit no va en el volumen: se usa por API externa.
 
 # --- InfiniteTalk (sobre Wan 2.1 I2V 480p) ---
-diffusion_models https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/I2V/Wan2_1-I2V-14B-480p_fp8_e4m3fn_scaled_KJ.safetensors
 diffusion_models https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/InfiniteTalk/Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors
 wav2vec2         https://huggingface.co/Kijai/wav2vec2_safetensors/resolve/main/wav2vec2-chinese-base_fp16.safetensors
-diffusion_models https://huggingface.co/Kijai/MelBandRoFormer_comfy/resolve/main/MelBandRoformer_fp16.safetensors
-loras            https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Lightx2v/lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
-clip_vision      https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors
 
 # --- Encoder de texto y VAE de Wan 2.1 ---
-text_encoders    https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
 vae              https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors
 
 # --- Chatterbox Multilingual (el nodo lo lee de /comfyui/models/chatterbox → volumen) ---
@@ -26,3 +21,37 @@ chatterbox/chatterbox_multilingual https://huggingface.co/ResembleAI/chatterbox/
 chatterbox/chatterbox_multilingual https://huggingface.co/ResembleAI/chatterbox/resolve/main/grapheme_mtl_merged_expanded_v1.json
 chatterbox/chatterbox_multilingual https://huggingface.co/ResembleAI/chatterbox/resolve/main/conds.pt
 chatterbox/chatterbox_multilingual https://huggingface.co/ResembleAI/chatterbox/resolve/main/Cangjie5_TC.json
+
+# LTX-2.3 (19-oct-2026, prueba contra InfiniteTalk y Wan 2.1). Licencia LTX-2 Community
+# License: uso comercial gratis bajo $10M/año, con aviso de contenido generado por IA.
+checkpoints           https://huggingface.co/Lightricks/LTX-2.3-fp8/resolve/main/ltx-2.3-22b-distilled-fp8.safetensors
+text_encoders         https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors
+latent_upscale_models https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors
+
+# Qwen3-TTS (Apache-2.0): VoiceDesign para crear las voces, Base para clonarlas línea por línea.
+qwen-tts/Qwen3-TTS-Tokenizer-12Hz https://huggingface.co/Qwen/Qwen3-TTS-Tokenizer-12Hz/resolve/main/config.json
+qwen-tts/Qwen3-TTS-Tokenizer-12Hz https://huggingface.co/Qwen/Qwen3-TTS-Tokenizer-12Hz/resolve/main/configuration.json
+qwen-tts/Qwen3-TTS-Tokenizer-12Hz https://huggingface.co/Qwen/Qwen3-TTS-Tokenizer-12Hz/resolve/main/model.safetensors
+qwen-tts/Qwen3-TTS-Tokenizer-12Hz https://huggingface.co/Qwen/Qwen3-TTS-Tokenizer-12Hz/resolve/main/preprocessor_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/generation_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/merges.txt
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/model.safetensors
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/preprocessor_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/speech_tokenizer/config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/speech_tokenizer/configuration.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/speech_tokenizer/model.safetensors
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/speech_tokenizer/preprocessor_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/tokenizer_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-VoiceDesign https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign/resolve/main/vocab.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/generation_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/merges.txt
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/model.safetensors
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/preprocessor_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/speech_tokenizer/config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/speech_tokenizer/configuration.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/speech_tokenizer/model.safetensors
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base/speech_tokenizer https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/speech_tokenizer/preprocessor_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/tokenizer_config.json
+qwen-tts/Qwen3-TTS-12Hz-1.7B-Base https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/resolve/main/vocab.json

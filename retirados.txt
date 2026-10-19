@@ -1,0 +1,8 @@
+# Ficheros que poblar-volumen.sh borra del volumen ANTES de bajar modelos.txt.
+# 19-oct-2026: Wan 2.1 I2V y lo que solo usa él, para hacer sitio a LTX-2.3 (OK del dueño, msg 48).
+# Si LTX pierde, se vuelven a poner en modelos.txt (se bajan otra vez de Hugging Face).
+diffusion_models Wan2_1-I2V-14B-480p_fp8_e4m3fn_scaled_KJ.safetensors
+diffusion_models MelBandRoformer_fp16.safetensors
+loras lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors
+clip_vision clip_vision_h.safetensors
+text_encoders umt5_xxl_fp8_e4m3fn_scaled.safetensors

@@ -11,6 +11,18 @@ set -euo pipefail
 RAIZ="${1:?uso: poblar-volumen.sh <punto de montaje del volumen>}"
 LISTA="$(dirname "$0")/modelos.txt"
 
+# Primero lo retirado (retirados.txt: «carpeta fichero»), para hacer sitio.
+RETIRADOS="$(dirname "$0")/retirados.txt"
+if [[ -f "$RETIRADOS" ]]; then
+  while read -r carpeta fichero; do
+    [[ -z "$carpeta" || "$carpeta" == \#* ]] && continue
+    if [[ -e "$RAIZ/models/$carpeta/$fichero" ]]; then
+      echo "== retiro $carpeta/$fichero"; rm -f "$RAIZ/models/$carpeta/$fichero"
+    fi
+  done < "$RETIRADOS"
+fi
+df -h "$RAIZ" || true
+
 fallos=0
 while read -r carpeta url; do
   [[ -z "$carpeta" || "$carpeta" == \#* ]] && continue
